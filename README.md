@@ -2,6 +2,9 @@
 Wanted to impliment a Unet form scratch and self driving cars are cool so lets 
 use a UNet on Comma.ai's 10k image segmentation data set.
 
+![Alt Text](./videos/Unet.gif)
+Needs some more training this is after 10 Ephochs
+
 ## Steps to train your own model.
 
 ### Step One
@@ -22,5 +25,7 @@ Run train.py - This will train the model on the data and give a show you the pro
 the mask.
 
 ## TODO
-- Make training image show in colour not gray scale
-- Add Infrence and save Model functionality
+- ~~Make training image show in colour not gray scale~~
+- ~~Add Infrence and save Model functionality~~
+- Train longer
+- Try on a drive
