@@ -1,6 +1,6 @@
 # UNet segmentation for self driving car
 Wanted to impliment a Unet form scratch and self driving cars are cool so lets 
-use a UNet on [Comma.ai's 10k][https://github.com/commaai/comma10k] image segmentation data set. Modified from [U-Net: Convolutional Networks for Biomedical Image Segmentation][https://arxiv.org/abs/1505.04597] 
+use a UNet on [Comma.ai's 10k](https://github.com/commaai/comma10k) image segmentation data set. Modified from [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597) 
 
 <p align="center">
   <img width="858" height="480" src="./videos/Unet.gif">
