@@ -20,12 +20,14 @@ def dice_loss(pred, target):
                 (pred.sum(axis=[0,2,3]) + target.sum(axis=[0,2,3]) + smooth)).mean()
 
 def pred_to_hooman(pred):
-    # bs c h w
-    # c h w
     pred = torch.argmax(pred, 0).type(torch.uint8)
-    # cv wants w h c
-    pred = pred.detach().cpu().numpy()*50
-    return pred
+    pred = pred.detach().cpu().numpy()
+    ret = np.zeros((pred.shape[0], pred.shape[1], 3))
+    for class_num, colour in enumerate([[128,255,0], [0,255,255], [255,0,127],
+                                        [255,0,255], [0,255,255]]):
+        ret[pred==class_num] = colour
+
+    return ret
 
 def run_training():
     mask_paths = glob.glob(f'{config.DATA_DIR}/cat_masks/*.png')
