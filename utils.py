@@ -24,6 +24,7 @@ def train_fn(model, data_loader, criterion, optimiser):
 
         # Calculate loss
         loss = criterion(outputs, targets)
+        loss.backward()
         optimiser.step()
         final_loss += loss.item()
 

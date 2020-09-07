@@ -24,8 +24,7 @@ def pred_to_hooman(pred):
     # c h w
     pred = torch.argmax(pred, 0).type(torch.uint8)
     # cv wants w h c
-    pred = pred.permute(1, 0)*50
-    pred = pred.detach().cpu().numpy()
+    pred = pred.detach().cpu().numpy()*50
     return pred
 
 def run_training():
@@ -76,7 +75,7 @@ def run_training():
         optimiser, factor=0.8, patience=5, verbose=True
     )
 
-    for epoch in range(config.BATCH_SIZE):
+    for epoch in range(config.EPOCHS):
         _, train_loss = utils.train_fn(model, train_loader, criterion, optimiser)
         print(f'Epoch {epoch} loss-{train_loss}')
         prediction, test_loss = utils.test_fn(model, test_loader, criterion)
