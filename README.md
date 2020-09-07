@@ -2,7 +2,9 @@
 Wanted to impliment a Unet form scratch and self driving cars are cool so lets 
 use a UNet on Comma.ai's 10k image segmentation data set.
 
-![Alt Text](./videos/Unet.gif)
+<p align="center">
+  <img width="1280" height="720" src="./videos/Unet.gif">
+</p>
 Needs some more training this is after 10 Ephochs
 
 ## Steps to train your own model.
