@@ -1,6 +1,6 @@
 # UNet segmentation for self driving car
 Wanted to impliment a Unet form scratch and self driving cars are cool so lets 
-use a UNet on Comma.ai's 10k iamge segmentation data set.
+use a UNet on Comma.ai's 10k image segmentation data set.
 
 ## Steps to train your own model.
 
