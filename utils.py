@@ -5,9 +5,7 @@ import config
 def train_fn(model, data_loader, criterion, optimiser):
     model.train()
     final_loss = 0
-    print('Training')
-    tk = tqdm(data_loader, total=len(data_loader))
-    for data in tk:
+    for data in data_loader:
         # get data
         inputs = data["image"]
         targets = data["mask"]
@@ -28,16 +26,13 @@ def train_fn(model, data_loader, criterion, optimiser):
         optimiser.step()
         final_loss += loss.item()
 
-    tk.close()
     return outputs, final_loss/ len(data_loader)
 
 def test_fn(model, data_loader, criterion):
     model.eval()
     final_loss = 0
-    print('Test')
-    tk = tqdm(data_loader, total=len(data_loader))
     with torch.no_grad():
-        for data in tk:
+        for data in data_loader:
             # get data
             inputs = data["image"]
             targets = data["mask"]
@@ -53,5 +48,4 @@ def test_fn(model, data_loader, criterion):
             loss = criterion(outputs, targets)
             final_loss += loss.item()
 
-    tk.close()
     return outputs, final_loss/ len(data_loader)

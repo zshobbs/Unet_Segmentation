@@ -49,8 +49,6 @@ while ret:
         cat = np.concatenate((show_frame, prediction), axis=1)
         cat = cv2.resize(cat, (1280,720))
         cv2.imshow('cat', cat)
-        cv2.imshow('vid', show_frame)
-        cv2.imshow('pred', prediction)
         key = cv2.waitKey(30)
         if key == ord('q'):
             break

@@ -74,18 +74,21 @@ def run_training():
     criterion = dice_loss
     optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimiser, factor=0.8, patience=5, verbose=True
+        optimiser, factor=0.3, patience=5, verbose=True
     )
 
     best_loss = 9999
-    for epoch in range(config.EPOCHS):
+    for epoch in tqdm(range(config.EPOCHS)):
         _, train_loss = utils.train_fn(model, train_loader, criterion, optimiser)
-        print(f'Epoch {epoch} loss-{train_loss}')
         prediction, test_loss = utils.test_fn(model, test_loader, criterion)
-        print(f'Epoch {epoch} loss-{test_loss}')
+        print(f'\rEpoch {epoch} Train Loss={train_loss} Test loss={test_loss}')
+        
+        scheduler.step(test_loss)
         # Save best model
         if test_loss < best_loss:
+            best_loss = test_loss
             torch.save(model, './model/Unet.pt')
+            print('Model Saved')
         look_at_training = pred_to_hooman(prediction[0,:,:,:])
         cv2.imshow('Prediction', look_at_training)
         cv2.waitKey(30)
