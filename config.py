@@ -1,7 +1,7 @@
 DATA_DIR = './comma10k'
-BATCH_SIZE = 8
+BATCH_SIZE = 5
 # Resizes to a square
-RESIZE = 256
-NUM_WORKERS = 8
+RESIZE = 512
+NUM_WORKERS = 16
 EPOCHS = 200
 DEVICE = 'cuda'

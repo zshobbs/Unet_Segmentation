@@ -57,7 +57,6 @@ class UNet(nn.Module):
         self.decode_4 = twoconv(128, 64)
         
         self.out = nn.Conv2d(64, 5, kernel_size=1)
-        self.out_softmax = nn.Softmax2d()
     
     def forward(self, image):
         # Encoder
@@ -93,7 +92,6 @@ class UNet(nn.Module):
         x = torch.cat((x, x1), axis=1)
         x = self.decode_4(x)
         x = self.out(x)
-        x = self.out_softmax(x)
         return x
 
 ian = torch.rand(1, 3, 256,256)

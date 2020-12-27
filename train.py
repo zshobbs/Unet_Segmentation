@@ -71,7 +71,7 @@ def run_training():
     model = UNet()
     model.to(config.DEVICE)
 
-    criterion = dice_loss
+    criterion = nn.CrossEntropyLoss()
     optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimiser, factor=0.3, patience=5, verbose=True

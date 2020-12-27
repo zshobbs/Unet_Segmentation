@@ -9,7 +9,7 @@ def train_fn(model, data_loader, criterion, optimiser):
         # get data
         inputs = data["image"]
         targets = data["mask"]
-        bs, c, h, w = targets.size()
+        bs, h, w = targets.size()
         
         # Move to device
         inputs = inputs.to(config.DEVICE)

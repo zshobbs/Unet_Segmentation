@@ -27,15 +27,16 @@ class MaskImDataset:
         image = augmented["image"]
         image = np.transpose(image, (2, 0, 1))
 
-        # Convert mask to onehot
+        # Convert mask to catagorical
         mask = torch.from_numpy(mask).type(torch.long)
-        mask.unsqueeze_(0)
-        mask_onehot = torch.LongTensor(5, mask.size(1), mask.size(2))
-        mask_onehot.zero_()
-        mask_onehot.scatter_(0, mask.data, 1)
+        # if one-hot needed uncomment
+        #mask.unsqueeze_(0)
+        #mask_onehot = torch.LongTensor(5, mask.size(1), mask.size(2))
+        #mask_onehot.zero_()
+        #mask_onehot.scatter_(0, mask.data, 1)
 
         return {"image": torch.tensor(image, dtype=torch.float),
-                "mask": mask_onehot}
+                "mask": mask}
 
 if __name__ == "__main__":
     # Fast test see if working as exspected
