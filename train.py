@@ -69,16 +69,24 @@ def run_training():
     )
 
     model = UNet()
+    optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
+    if config.LOAD != None:
+        checkpoint = torch.load(config.LOAD)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        start_epoch = checkpoint['epoch']
+        best_loss = checkpoint['loss']
+    else:
+        best_loss = 9999
+        start_epoch = 0
+
     model.to(config.DEVICE)
 
     criterion = nn.CrossEntropyLoss()
-    optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimiser, factor=0.3, patience=5, verbose=True
     )
 
-    best_loss = 9999
-    for epoch in tqdm(range(config.EPOCHS)):
+    for epoch in tqdm(range(start_epoch, config.EPOCHS)):
         _, train_loss = utils.train_fn(model, train_loader, criterion, optimiser)
         prediction, test_loss = utils.test_fn(model, test_loader, criterion)
         print(f'\rEpoch {epoch} Train Loss={train_loss} Test loss={test_loss}')
@@ -87,7 +95,11 @@ def run_training():
         # Save best model
         if test_loss < best_loss:
             best_loss = test_loss
-            torch.save(model, './model/Unet.pt')
+            torch.save({
+                        'epoch': epoch,
+                        'model_state_dict': model.state_dict(),
+                        'loss': test_loss,
+                        }, f'./model/unet_{epoch}.pt')
             print('Model Saved')
         look_at_training = pred_to_hooman(prediction[0,:,:,:])
         cv2.imshow('Prediction', look_at_training)

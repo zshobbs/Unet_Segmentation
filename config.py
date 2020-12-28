@@ -5,3 +5,4 @@ RESIZE = 512
 NUM_WORKERS = 16
 EPOCHS = 200
 DEVICE = 'cuda'
+LOAD = None
