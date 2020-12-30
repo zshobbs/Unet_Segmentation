@@ -3,14 +3,19 @@ import torch
 import numpy as np
 import cv2
 
+from model import UNet
 
-model_path = './model/Unet.pt'
+
+model_path = './model/unet_11.pt'
 vid_path = './videos/vid.mp4'
 vid_out = './videos/out_vid.mp4'
 
 DEVICE = 'cuda'
 # Load model set in eval mode
-model = torch.load(model_path)
+model = UNet()
+checkpoint = torch.load(model_path)
+model.load_state_dict(checkpoint['model_state_dict'])
+
 model.to(DEVICE)
 model.eval()
 
