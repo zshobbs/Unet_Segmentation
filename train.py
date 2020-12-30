@@ -68,6 +68,7 @@ def run_training():
         shuffle=False
     )
 
+    # Load model
     model = UNet()
     optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     if config.LOAD != None:
@@ -81,13 +82,16 @@ def run_training():
 
     model.to(config.DEVICE)
 
+    # Scaler for fp16 traing (mixed precision)
+    scaler = torch.cuda.amp.GradScaler()
+
     criterion = nn.CrossEntropyLoss()
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimiser, factor=0.3, patience=5, verbose=True
     )
 
     for epoch in tqdm(range(start_epoch, config.EPOCHS)):
-        _, train_loss = utils.train_fn(model, train_loader, criterion, optimiser)
+        _, train_loss = utils.train_fn(model, train_loader, criterion, optimiser, scaler)
         prediction, test_loss = utils.test_fn(model, test_loader, criterion)
         print(f'\rEpoch {epoch} Train Loss={train_loss} Test loss={test_loss}')
         

@@ -2,7 +2,7 @@ from tqdm import tqdm
 import torch
 import config
 
-def train_fn(model, data_loader, criterion, optimiser):
+def train_fn(model, data_loader, criterion, optimiser, scaler):
     model.train()
     final_loss = 0
     for data in data_loader:
@@ -17,13 +17,15 @@ def train_fn(model, data_loader, criterion, optimiser):
 
         optimiser.zero_grad()
 
-        # forward pass throght model
-        outputs = model(inputs)
+        with torch.cuda.amp.autocast():
+            # forward pass throght model
+            outputs = model(inputs)
+            # Calculate loss
+            loss = criterion(outputs, targets)
 
-        # Calculate loss
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimiser.step()
+        scaler.scale(loss).backward()
+        scaler.step(optimiser)
+        scaler.update()
         final_loss += loss.item()
 
     return outputs, final_loss/ len(data_loader)
