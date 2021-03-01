@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import cv2
+import os
 
 from sklearn import model_selection
 
@@ -11,6 +12,7 @@ import config
 import dataset
 import utils
 import model
+
 
 def dice_loss(pred, target):
     smooth = 1.
@@ -103,12 +105,17 @@ def run_training():
                         'epoch': epoch,
                         'model_state_dict': model.state_dict(),
                         'loss': test_loss,
-                        }, f'./model/unet_{epoch}.pt')
+                        }, f'./models/unet_{epoch}.pt')
             print('Model Saved')
-        look_at_training = pred_to_hooman(prediction[0,:,:,:])
-        cv2.imshow('Prediction', look_at_training)
-        cv2.waitKey(30)
+
+        if not config.HEADLESS:
+            look_at_training = pred_to_hooman(prediction[0,:,:,:])
+            cv2.imshow('Prediction', look_at_training)
+            cv2.waitKey(30)
 
 if __name__ == "__main__":
+    # Test if models dir exsits make if not
+    if not os.path.exists('./models'):
+        os.mkdir('./models')
     run_training()
     cv2.destroyAllWindows()

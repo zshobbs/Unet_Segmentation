@@ -6,3 +6,4 @@ NUM_WORKERS = 16
 EPOCHS = 200
 DEVICE = 'cuda'
 LOAD = None
+HEADLESS = False

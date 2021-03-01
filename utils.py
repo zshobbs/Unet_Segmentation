@@ -23,9 +23,10 @@ def train_fn(model, data_loader, criterion, optimiser, scaler):
             # Calculate loss
             loss = criterion(outputs, targets)
 
-        scaler.scale(loss).backward()
-        scaler.step(optimiser)
-        scaler.update()
+        if scale != None:
+            scaler.scale(loss).backward()
+            scaler.step(optimiser)
+            scaler.update()
         final_loss += loss.item()
 
     return outputs, final_loss/ len(data_loader)
