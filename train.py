@@ -10,7 +10,7 @@ from sklearn import model_selection
 import config
 import dataset
 import utils
-from model import UNet
+import model
 
 def dice_loss(pred, target):
     smooth = 1.
@@ -69,7 +69,7 @@ def run_training():
     )
 
     # Load model
-    model = UNet()
+    model = model.ResnetUnet(class_num=5)
     optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     if config.LOAD != None:
         checkpoint = torch.load(config.LOAD)
