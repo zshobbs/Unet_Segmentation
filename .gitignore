@@ -1,5 +1,5 @@
 comma10k/
 __pycache__/
-env/
+.env/
 *.ipynb
 *.pt
