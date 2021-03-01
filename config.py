@@ -7,3 +7,4 @@ EPOCHS = 200
 DEVICE = 'cuda'
 LOAD = None
 HEADLESS = False
+fp16 = True

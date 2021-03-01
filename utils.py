@@ -23,7 +23,7 @@ def train_fn(model, data_loader, criterion, optimiser, scaler):
             # Calculate loss
             loss = criterion(outputs, targets)
 
-        if scale != None:
+        if scaler != None:
             scaler.scale(loss).backward()
             scaler.step(optimiser)
             scaler.update()

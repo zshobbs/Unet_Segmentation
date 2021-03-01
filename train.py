@@ -11,7 +11,7 @@ from sklearn import model_selection
 import config
 import dataset
 import utils
-import model
+import unet_models
 
 
 def dice_loss(pred, target):
@@ -71,7 +71,7 @@ def run_training():
     )
 
     # Load model
-    model = model.ResnetUnet(class_num=5)
+    model = unet_models.ResnetUnet(class_num=5)
     optimiser = torch.optim.Adam(model.parameters(), lr=3e-4)
     if config.LOAD != None:
         checkpoint = torch.load(config.LOAD)
@@ -84,8 +84,11 @@ def run_training():
 
     model.to(config.DEVICE)
 
-    # Scaler for fp16 traing (mixed precision)
-    scaler = torch.cuda.amp.GradScaler()
+    if config.fp16:
+        # Scaler for fp16 traing (mixed precision)
+        scaler = torch.cuda.amp.GradScaler()
+    else:
+        scaler = None
 
     criterion = nn.CrossEntropyLoss()
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(

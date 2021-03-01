@@ -1,9 +1,10 @@
 import torch
 import torch.nn as nn
+from torchvision import models
 
 
 # Change this for more complex/simple decoder network
-def twoconv(in_channels, out_channels):
+def decode_conv(in_channels, out_channels):
     conv = nn.Sequential(
         nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
         nn.ReLU(inplace=True),
@@ -18,11 +19,11 @@ class UNet(nn.Module):
         self.max_pool = nn.MaxPool2d(kernel_size=2, stride=2)
         
         # Encoder side of network
-        self.encode_1 = twoconv(3, 64)
-        self.encode_2 = twoconv(64, 128)
-        self.encode_3 = twoconv(128, 256)
-        self.encode_4 = twoconv(256, 512)
-        self.encode_5 = twoconv(512, 1024)
+        self.encode_1 = decode_conv(3, 64)
+        self.encode_2 = decode_conv(64, 128)
+        self.encode_3 = decode_conv(128, 256)
+        self.encode_4 = decode_conv(256, 512)
+        self.encode_5 = decode_conv(512, 1024)
 
         # decode side of network
         self.exspand_1 = nn.ConvTranspose2d(
@@ -31,7 +32,7 @@ class UNet(nn.Module):
             kernel_size=2,
             stride=2)
         
-        self.decode_1 = twoconv(1024, 512)
+        self.decode_1 = decode_conv(1024, 512)
         
         self.exspand_2 = nn.ConvTranspose2d(
             512,
@@ -39,7 +40,7 @@ class UNet(nn.Module):
             kernel_size=2,
             stride=2)
         
-        self.decode_2 = twoconv(512, 256)
+        self.decode_2 = decode_conv(512, 256)
         
         self.exspand_3 = nn.ConvTranspose2d(
             256,
@@ -47,7 +48,7 @@ class UNet(nn.Module):
             kernel_size=2,
             stride=2)
         
-        self.decode_3 = twoconv(256, 128)
+        self.decode_3 = decode_conv(256, 128)
         
         self.exspand_4 = nn.ConvTranspose2d(
             128,
@@ -55,7 +56,7 @@ class UNet(nn.Module):
             kernel_size=2,
             stride=2)
         
-        self.decode_4 = twoconv(128, 64)
+        self.decode_4 = decode_conv(128, 64)
         
         self.out = nn.Conv2d(64, class_num, kernel_size=1)
     
